@@ -1,0 +1,15 @@
+## [Start] Authorization Steps. **
+$util.qr($ctx.stash.put("hasAuth", true))
+#set( $isAuthorized = false )
+#set( $totalFields = ["id","company","user","createdAt","company_role","updatedAt","userCompaniesId","companyUsersId"] )
+#set( $allowedAggFields = ["updatedAt","userCompaniesId","companyUsersId","id","company","user","createdAt","company_role"] )
+#if( $util.authType() == "Lambda Authorization" )
+  #set( $isAuthorized = true )
+  #set( $allowedAggFields = $totalFields )
+#end
+$util.qr($ctx.stash.put("allowedAggFields", $allowedAggFields))
+#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )
+$util.unauthorized()
+#end
+$util.toJson({"version":"2018-05-29","payload":{}})
+## [End] Authorization Steps. **

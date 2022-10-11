@@ -1,0 +1,613 @@
+
+type User {
+  id: ID!
+  name: String!
+  verification_code: String
+  email_address: String!
+  password_hash: String!
+  confirmed: Boolean
+  companies(filter: ModelUserCompanyFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserCompanyConnection
+  group: Group
+  system_role: SystemRole!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  groupUsersId: ID
+}
+
+type Company {
+  id: ID!
+  name: String!
+  manager: String!
+  pic: String!
+  start_measure_date: AWSDate
+  site: String
+  service_type: Int
+  status: Boolean
+  memo: String
+  group: Group
+  users(filter: ModelUserCompanyFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserCompanyConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  groupCompaniesId: ID
+}
+
+type UserCompany {
+  id: ID!
+  company: Company
+  user: User
+  createdAt: AWSDateTime
+  company_role: CompanyRole!
+  updatedAt: AWSDateTime!
+  userCompaniesId: ID
+  companyUsersId: ID
+}
+
+type Group {
+  id: ID!
+  name: String!
+  sub_domain: String!
+  original_domain: String
+  users(filter: ModelUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserConnection
+  companies(filter: ModelCompanyFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCompanyConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+enum CompanyRole {
+  SALES_LEAD
+  SALES_MEMBER
+  CUSTOMER_LEAD
+  CUSTOMER_MEMBER
+  NULL
+}
+
+enum SystemRole {
+  SUPERUSER
+  MANAGER_USER
+  GROUP_SUPERUSER
+  SYSTEM_LEAD
+  SYSTEM_MEMBER
+  SYSTEM_CUSTOMER_LEAD
+  SYSTEM_CUSTOMER_MEMBER
+}
+
+type UserFetch {
+  id: String
+  name: String
+}
+
+type getUserEmail {
+  email: String
+  groupId: String
+  name: String
+  refreshToken: String
+  sessionToken: String
+  status: String
+  userId: String
+  confirmedError: String
+  emailError: String
+  passwordError: String
+}
+
+type getSessionToken {
+  status: String
+  sessionToken: String
+  email: String
+  userId: String
+  groupId: String
+  name: String
+  refreshExpError: String
+}
+
+type resetPasswordMessage {
+  successMessage: String
+  errorMessage: String
+}
+
+type Query {
+  testFunc(id: ID!, name: String): UserFetch
+  loginTest(email_address: String!, password_hash: String!): getUserEmail
+  refreshTest(refreshToken: String!): getSessionToken
+  passwordResetTest(resetPassword: String!): resetPasswordMessage
+  searchUserCompanies(filter: SearchableUserCompanyFilterInput, sort: [SearchableUserCompanySortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableUserCompanyAggregationInput]): SearchableUserCompanyConnection
+  getUser(id: ID!): User
+  listUsers(id: ID, filter: ModelUserFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserConnection
+  getCompany(id: ID!): Company
+  listCompanies(id: ID, filter: ModelCompanyFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelCompanyConnection
+  getUserCompany(id: ID!): UserCompany
+  listUserCompanies(id: ID, filter: ModelUserCompanyFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserCompanyConnection
+  getGroup(id: ID!): Group
+  listGroups(id: ID, filter: ModelGroupFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelGroupConnection
+  getUserByEmailAddress(email_address: String!, sortDirection: ModelSortDirection, filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+}
+
+type SearchableUserCompanyConnection {
+  items: [UserCompany]!
+  nextToken: String
+  total: Int
+  aggregateItems: [SearchableAggregateResult]!
+}
+
+type SearchableAggregateResult {
+  name: String!
+  result: SearchableAggregateGenericResult
+}
+
+type SearchableAggregateScalarResult {
+  value: Float!
+}
+
+type SearchableAggregateBucketResult {
+  buckets: [SearchableAggregateBucketResultItem]
+}
+
+type SearchableAggregateBucketResultItem {
+  key: String!
+  doc_count: Int!
+}
+
+union SearchableAggregateGenericResult = SearchableAggregateScalarResult | SearchableAggregateBucketResult
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelUserConnection {
+  items: [User]!
+  nextToken: String
+}
+
+input ModelSystemRoleInput {
+  eq: SystemRole
+  ne: SystemRole
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  verification_code: ModelStringInput
+  email_address: ModelStringInput
+  password_hash: ModelStringInput
+  confirmed: ModelBooleanInput
+  system_role: ModelSystemRoleInput
+  createdAt: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+  groupUsersId: ModelIDInput
+}
+
+input ModelUserConditionInput {
+  name: ModelStringInput
+  verification_code: ModelStringInput
+  email_address: ModelStringInput
+  password_hash: ModelStringInput
+  confirmed: ModelBooleanInput
+  system_role: ModelSystemRoleInput
+  createdAt: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+  groupUsersId: ModelIDInput
+}
+
+input CreateUserInput {
+  id: ID
+  name: String!
+  verification_code: String
+  email_address: String!
+  password_hash: String!
+  confirmed: Boolean
+  system_role: SystemRole!
+  createdAt: AWSDateTime
+  groupUsersId: ID
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+  verification_code: String
+  email_address: String
+  password_hash: String
+  confirmed: Boolean
+  system_role: SystemRole
+  createdAt: AWSDateTime
+  groupUsersId: ID
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+  createCompany(input: CreateCompanyInput!, condition: ModelCompanyConditionInput): Company
+  updateCompany(input: UpdateCompanyInput!, condition: ModelCompanyConditionInput): Company
+  deleteCompany(input: DeleteCompanyInput!, condition: ModelCompanyConditionInput): Company
+  createUserCompany(input: CreateUserCompanyInput!, condition: ModelUserCompanyConditionInput): UserCompany
+  updateUserCompany(input: UpdateUserCompanyInput!, condition: ModelUserCompanyConditionInput): UserCompany
+  deleteUserCompany(input: DeleteUserCompanyInput!, condition: ModelUserCompanyConditionInput): UserCompany
+  createGroup(input: CreateGroupInput!, condition: ModelGroupConditionInput): Group
+  updateGroup(input: UpdateGroupInput!, condition: ModelGroupConditionInput): Group
+  deleteGroup(input: DeleteGroupInput!, condition: ModelGroupConditionInput): Group
+}
+
+type Subscription {
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
+  onCreateCompany: Company @aws_subscribe(mutations: ["createCompany"])
+  onUpdateCompany: Company @aws_subscribe(mutations: ["updateCompany"])
+  onDeleteCompany: Company @aws_subscribe(mutations: ["deleteCompany"])
+  onCreateUserCompany: UserCompany @aws_subscribe(mutations: ["createUserCompany"])
+  onUpdateUserCompany: UserCompany @aws_subscribe(mutations: ["updateUserCompany"])
+  onDeleteUserCompany: UserCompany @aws_subscribe(mutations: ["deleteUserCompany"])
+  onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"])
+  onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"])
+  onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"])
+}
+
+type ModelCompanyConnection {
+  items: [Company]!
+  nextToken: String
+}
+
+input ModelCompanyFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  manager: ModelStringInput
+  pic: ModelStringInput
+  start_measure_date: ModelStringInput
+  site: ModelStringInput
+  service_type: ModelIntInput
+  status: ModelBooleanInput
+  memo: ModelStringInput
+  createdAt: ModelStringInput
+  and: [ModelCompanyFilterInput]
+  or: [ModelCompanyFilterInput]
+  not: ModelCompanyFilterInput
+  groupCompaniesId: ModelIDInput
+}
+
+input ModelCompanyConditionInput {
+  name: ModelStringInput
+  manager: ModelStringInput
+  pic: ModelStringInput
+  start_measure_date: ModelStringInput
+  site: ModelStringInput
+  service_type: ModelIntInput
+  status: ModelBooleanInput
+  memo: ModelStringInput
+  createdAt: ModelStringInput
+  and: [ModelCompanyConditionInput]
+  or: [ModelCompanyConditionInput]
+  not: ModelCompanyConditionInput
+  groupCompaniesId: ModelIDInput
+}
+
+input CreateCompanyInput {
+  id: ID
+  name: String!
+  manager: String!
+  pic: String!
+  start_measure_date: AWSDate
+  site: String
+  service_type: Int
+  status: Boolean
+  memo: String
+  createdAt: AWSDateTime
+  groupCompaniesId: ID
+}
+
+input UpdateCompanyInput {
+  id: ID!
+  name: String
+  manager: String
+  pic: String
+  start_measure_date: AWSDate
+  site: String
+  service_type: Int
+  status: Boolean
+  memo: String
+  createdAt: AWSDateTime
+  groupCompaniesId: ID
+}
+
+input DeleteCompanyInput {
+  id: ID!
+}
+
+type ModelUserCompanyConnection {
+  items: [UserCompany]!
+  nextToken: String
+}
+
+input ModelCompanyRoleInput {
+  eq: CompanyRole
+  ne: CompanyRole
+}
+
+input ModelUserCompanyFilterInput {
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  company_role: ModelCompanyRoleInput
+  and: [ModelUserCompanyFilterInput]
+  or: [ModelUserCompanyFilterInput]
+  not: ModelUserCompanyFilterInput
+  userCompaniesId: ModelIDInput
+  companyUsersId: ModelIDInput
+}
+
+input ModelUserCompanyConditionInput {
+  createdAt: ModelStringInput
+  company_role: ModelCompanyRoleInput
+  and: [ModelUserCompanyConditionInput]
+  or: [ModelUserCompanyConditionInput]
+  not: ModelUserCompanyConditionInput
+  userCompaniesId: ModelIDInput
+  companyUsersId: ModelIDInput
+}
+
+input CreateUserCompanyInput {
+  id: ID
+  createdAt: AWSDateTime
+  company_role: CompanyRole!
+  userCompaniesId: ID
+  companyUsersId: ID
+}
+
+input UpdateUserCompanyInput {
+  id: ID!
+  createdAt: AWSDateTime
+  company_role: CompanyRole
+  userCompaniesId: ID
+  companyUsersId: ID
+}
+
+input DeleteUserCompanyInput {
+  id: ID!
+}
+
+type ModelGroupConnection {
+  items: [Group]!
+  nextToken: String
+}
+
+input ModelGroupFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  sub_domain: ModelStringInput
+  original_domain: ModelStringInput
+  and: [ModelGroupFilterInput]
+  or: [ModelGroupFilterInput]
+  not: ModelGroupFilterInput
+}
+
+input ModelGroupConditionInput {
+  name: ModelStringInput
+  sub_domain: ModelStringInput
+  original_domain: ModelStringInput
+  and: [ModelGroupConditionInput]
+  or: [ModelGroupConditionInput]
+  not: ModelGroupConditionInput
+}
+
+input CreateGroupInput {
+  id: ID
+  name: String!
+  sub_domain: String!
+  original_domain: String
+}
+
+input UpdateGroupInput {
+  id: ID!
+  name: String
+  sub_domain: String
+  original_domain: String
+}
+
+input DeleteGroupInput {
+  id: ID!
+}
+
+input SearchableStringFilterInput {
+  ne: String
+  gt: String
+  lt: String
+  gte: String
+  lte: String
+  eq: String
+  match: String
+  matchPhrase: String
+  matchPhrasePrefix: String
+  multiMatch: String
+  exists: Boolean
+  wildcard: String
+  regexp: String
+  range: [String]
+}
+
+input SearchableIntFilterInput {
+  ne: Int
+  gt: Int
+  lt: Int
+  gte: Int
+  lte: Int
+  eq: Int
+  range: [Int]
+}
+
+input SearchableFloatFilterInput {
+  ne: Float
+  gt: Float
+  lt: Float
+  gte: Float
+  lte: Float
+  eq: Float
+  range: [Float]
+}
+
+input SearchableBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input SearchableIDFilterInput {
+  ne: ID
+  gt: ID
+  lt: ID
+  gte: ID
+  lte: ID
+  eq: ID
+  match: ID
+  matchPhrase: ID
+  matchPhrasePrefix: ID
+  multiMatch: ID
+  exists: Boolean
+  wildcard: ID
+  regexp: ID
+  range: [ID]
+}
+
+input SearchableUserCompanyFilterInput {
+  id: SearchableIDFilterInput
+  createdAt: SearchableStringFilterInput
+  updatedAt: SearchableStringFilterInput
+  userCompaniesId: SearchableIDFilterInput
+  companyUsersId: SearchableIDFilterInput
+  company_role: SearchableStringFilterInput
+  and: [SearchableUserCompanyFilterInput]
+  or: [SearchableUserCompanyFilterInput]
+  not: SearchableUserCompanyFilterInput
+}
+
+enum SearchableSortDirection {
+  asc
+  desc
+}
+
+enum SearchableUserCompanySortableFields {
+  id
+  createdAt
+  updatedAt
+  userCompaniesId
+  companyUsersId
+}
+
+input SearchableUserCompanySortInput {
+  field: SearchableUserCompanySortableFields
+  direction: SearchableSortDirection
+}
+
+enum SearchableAggregateType {
+  terms
+  avg
+  min
+  max
+  sum
+}
+
+enum SearchableUserCompanyAggregateField {
+  id
+  createdAt
+  company_role
+  updatedAt
+  userCompaniesId
+  companyUsersId
+}
+
+input SearchableUserCompanyAggregationInput {
+  name: String!
+  type: SearchableAggregateType!
+  field: SearchableUserCompanyAggregateField!
+}
+
