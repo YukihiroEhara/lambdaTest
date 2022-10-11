@@ -1,0 +1,106 @@
+type User @model @auth(rules: [{ allow: custom }]) {
+  id: ID! @primaryKey
+  name: String!
+  verification_code: String @index(name: "byVerificationCode")
+  email_address: String!
+    @index(name: "byEmailAddress", queryField: "getUserByEmailAddress")
+  password_hash: String!
+  confirmed: Boolean
+  companies: [UserCompany] @hasMany
+  group: Group @belongsTo
+  system_role: SystemRole!
+  createdAt: AWSDateTime!
+}
+
+type Company @model @auth(rules: [{ allow: custom }]) {
+  id: ID! @primaryKey
+  name: String!
+  manager: String!
+  pic: String!
+  start_measure_date: AWSDate
+  site: String
+  service_type: Int
+  status: Boolean
+  memo: String
+  group: Group @belongsTo
+  users: [UserCompany] @hasMany
+  createdAt: AWSDateTime!
+}
+
+type UserCompany @model @auth(rules: [{ allow: custom }]) @searchable {
+  id: ID! @primaryKey
+  company: Company @belongsTo
+  user: User @belongsTo
+  createdAt: AWSDateTime
+  company_role: CompanyRole!
+}
+
+type Group @model @auth(rules: [{ allow: custom }]) {
+  id: ID! @primaryKey
+  name: String!
+  sub_domain: String! @index(name: "bySubDomain")
+  original_domain: String @index(name: "byOriginalDomain")
+  users: [User] @hasMany
+  companies: [Company] @hasMany
+}
+
+enum CompanyRole {
+  SALES_LEAD
+  SALES_MEMBER
+  CUSTOMER_LEAD
+  CUSTOMER_MEMBER
+  NULL
+}
+
+enum SystemRole {
+  SUPERUSER
+  MANAGER_USER
+  GROUP_SUPERUSER
+  SYSTEM_LEAD
+  SYSTEM_MEMBER
+  SYSTEM_CUSTOMER_LEAD
+  SYSTEM_CUSTOMER_MEMBER
+}
+
+type UserFetch {
+  id: String
+  name: String
+}
+
+type getUserEmail {
+  email: String
+  groupId: String
+  name: String
+  refreshToken: String
+  sessionToken: String
+  status: String
+  userId: String
+  confirmedError: String
+  emailError: String
+  passwordError: String
+}
+
+type getSessionToken {
+  status: String
+  sessionToken: String
+  email: String
+  userId: String
+  groupId: String
+  name: String
+  refreshExpError: String
+}
+
+type resetPasswordMessage {
+  successMessage: String
+  errorMessage: String
+}
+type Query {
+  testFunc(id: ID!, name: String): UserFetch
+    @function(name: "queryLambda-${env}")
+  loginTest(email_address: String!, password_hash: String!): getUserEmail
+    @function(name: "loginDev-${env}")
+  refreshTest(refreshToken: String!): getSessionToken
+    @function(name: "refreshTokenCheckDev-${env}")
+  passwordResetTest(resetPassword: String!): resetPasswordMessage
+    @function(name: "passwordResetDev-${env}")
+}

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "lambdatestapp",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/yukihiro/projects/repoAuthDev/lambdatest/amplify/backend/api/lambdatestapp/schema.graphql",
+    "defaultAuthType": {
+      "mode": "AWS_LAMBDA",
+      "lambdaFunction": "graphQlLambdaAuthorizerb170fa00",
+      "ttlSeconds": "300"
+    }
+  }
+}

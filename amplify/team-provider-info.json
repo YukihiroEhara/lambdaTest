@@ -1,0 +1,43 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lambdatestapp-dev-213425-authRole",
+      "UnauthRoleArn": "arn:aws:iam::158145148995:role/amplify-lambdatestapp-dev-213425-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::158145148995:role/amplify-lambdatestapp-dev-213425-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-lambdatestapp-dev-213425-deployment",
+      "UnauthRoleName": "amplify-lambdatestapp-dev-213425-unauthRole",
+      "StackName": "amplify-lambdatestapp-dev-213425",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:158145148995:stack/amplify-lambdatestapp-dev-213425/3bf03c50-374e-11ed-8933-0e89510baa81",
+      "AmplifyAppId": "d1cmpqlzsb8l2m"
+    },
+    "categories": {
+      "function": {
+        "graphQlLambdaAuthorizerb170fa00": {
+          "deploymentBucketName": "amplify-lambdatestapp-dev-213425-deployment",
+          "s3Key": "amplify-builds/graphQlLambdaAuthorizerb170fa00-69766c76627a4959786a-build.zip"
+        },
+        "queryLambda": {
+          "deploymentBucketName": "amplify-lambdatestapp-dev-213425-deployment",
+          "s3Key": "amplify-builds/queryLambda-426b736f59666a5a6b6e-build.zip"
+        },
+        "commonLambda": {
+          "deploymentBucketName": "amplify-lambdatestapp-dev-213425-deployment",
+          "s3Key": "amplify-builds/commonLambda-30456b4a684e7a697872-build.zip"
+        },
+        "loginDev": {
+          "deploymentBucketName": "amplify-lambdatestapp-dev-213425-deployment",
+          "s3Key": "amplify-builds/loginDev-6b377356756b5979782b-build.zip"
+        },
+        "refreshTokenCheckDev": {
+          "deploymentBucketName": "amplify-lambdatestapp-dev-213425-deployment",
+          "s3Key": "amplify-builds/refreshTokenCheckDev-67507749545765356a51-build.zip"
+        },
+        "passwordResetDev": {
+          "deploymentBucketName": "amplify-lambdatestapp-dev-213425-deployment",
+          "s3Key": "amplify-builds/passwordResetDev-32653665653562365455-build.zip"
+        }
+      }
+    }
+  }
+}
