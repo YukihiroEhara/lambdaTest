@@ -16,9 +16,6 @@
    }
  `);
  
-   // const token = "custom-authorized!!";
-   // const token = "custom-authorized";
-   // const token = "7AlRrFd3EDazpZfBewFXY6naouLfQhlB";
    const client = getClient();
    const fetchData = function () {
      return new Promise(function (resolve, reject) {
@@ -26,7 +23,7 @@
          .query({
            query: getUser,
            variables: {
-             id: "03f8110b-40c8-179a-0e9d-4184a29d8725",
+             id: event.arguments.id,
              fetchPolicy: "network-only",
            },
          }) //Uncomment for AWS Lambda
@@ -47,8 +44,6 @@
      name:query.getUser.name,
    }
    
-   return {
-     body: JSON.stringify(objData),
-   };
+   return objData
  };
  
