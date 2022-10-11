@@ -5,7 +5,7 @@
 })();
 
 const DISABLE_OFFLINE = process.env.DISABLE_OFFLINE || true;
-const getClient = (token, disableOffline) => {
+exports.getClient = (token) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   const AUTH_TYPE = require("aws-appsync").AUTH_TYPE;
   const AWSAppSyncClient = require("aws-appsync").default;
@@ -20,10 +20,10 @@ const getClient = (token, disableOffline) => {
     region: REGION,
     auth: {
       type: AUTH_TYPE.AWS_LAMBDA,
-      token: "7AlRrFd3EDazpZfBewFXY6naouLfQhlB",
+      token: token,
     },
     disableOffline: DISABLE_OFFLINE,
   });
   return client;
 };
-module.exports = getClient;
+

@@ -39,7 +39,7 @@ export const login = async (
   setLoading(true);
 
   const res = await fetchLoginUser(email, password, "dairitenA.com");
-  
+  console.log(res);
   const data = res.data.loginTest;
   console.log(data);
   localStorage.setItem("userName", data.name);
