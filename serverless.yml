@@ -1,0 +1,106 @@
+service: lambdatest
+useDotenv: true
+  
+
+provider:
+  name: aws
+  stage: dev
+  region: ap-northeast-1
+  # role: arn:aws:iam::306703177254:role/admin
+
+package:
+  individually: true
+  exclude:
+    - src/functions/changepassword/node_modules/**
+    - src/functions/decode/node_modules/**
+    - src/functions/invite/node_modules/**
+    - src/functions/renewsession/node_modules/**
+    - src/functions/customauthorizer/node_modules/**
+    - src/functions/signup/node_modules/**
+    - src/functions/verifyemail/node_modules/**
+    - src/functions/login/node_modules/**
+    - src/functions/forgotpassword/node_modules/**
+
+plugins:
+  - serverless-plugin-include-dependencies
+  # - serverless-aws-documentation
+  # - serverless-apigw-binary
+  # - serverless-apigwy-binary
+  # - serverless-python-requirements
+
+custom:
+  includeDependencies:
+    always:
+      - 'node_modules/'
+  apigwBinary:
+    types:
+      - 'multipart/form-data'
+      - 'application/octet-stream'
+  #pythonRequirements:
+  #  dockerizePip: true
+  #  #dockerImage: lambci/lambda:build
+  #  dockerImage: python:3.6
+  #  #dockerFile: ./Dockerfile
+
+functions:
+  login:
+    runtime: nodejs16.x
+    handler: src/functions/login/index.handler
+    timeout: 30
+    environment:
+      SECRET_KEY_FOR_PASSWORD_HASH: ${env:SECRET_KEY_FOR_PASSWORD_HASH}
+
+  decode:
+    runtime: nodejs16.x
+    handler: src/functions/decode/index.handler
+    timeout: 30
+    environment:
+      SECRET_KEY_FOR_PASSWORD_HASH: ${env:SECRET_KEY_FOR_PASSWORD_HASH}
+
+  changepassword:
+    runtime: nodejs16.x
+    handler: src/functions/changepassword/index.handler
+    timeout: 30
+    environment:
+      SECRET_KEY_FOR_PASSWORD_HASH: ${env:SECRET_KEY_FOR_PASSWORD_HASH}
+
+  invite:
+    runtime: nodejs16.x
+    handler: src/functions/invite/index.handler
+    timeout: 30     
+    environment:
+      SECRET_KEY_FOR_PASSWORD_HASH: ${env:SECRET_KEY_FOR_PASSWORD_HASH}
+
+  renewsession:
+    runtime: nodejs16.x
+    handler: src/functions/renewsession/index.handler
+    timeout: 30
+    environment:
+      SECRET_KEY_FOR_PASSWORD_HASH: ${env:SECRET_KEY_FOR_PASSWORD_HASH}
+
+  signup:
+    runtime: nodejs16.x
+    handler: src/functions/signup/index.handler
+    timeout: 30      
+    environment:
+      SECRET_KEY_FOR_PASSWORD_HASH: ${env:SECRET_KEY_FOR_PASSWORD_HASH}
+
+  verifyemail:
+    runtime: nodejs16.x
+    handler: src/functions/verifyemail/index.handler
+    timeout: 30
+    environment:
+      SECRET_KEY_FOR_PASSWORD_HASH: ${env:SECRET_KEY_FOR_PASSWORD_HASH}
+
+  forgotpassword:
+    runtime: nodejs16.x
+    handler: src/functions/forgotpassword/index.handler
+    timeout: 30
+    environment:
+      SECRET_KEY_FOR_PASSWORD_HASH: ${env:SECRET_KEY_FOR_PASSWORD_HASH}
+
+  customauthorizer:
+    runtime: nodejs16.x
+    handler: src/functions/customauthorizer/index.handler
+    environment:
+      SECRET_KEY_FOR_PASSWORD_HASH: ${env:SECRET_KEY_FOR_PASSWORD_HASH}

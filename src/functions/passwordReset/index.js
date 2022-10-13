@@ -1,9 +1,9 @@
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-const getClient = require("get-gql-client");
+const getClient = require("../utils/get-gql-client").getClient;
 const gql = require("graphql-tag");
-const utils = require("utils");
+const utils = require("../utils/utils");
 const jwt = require("jsonwebtoken");
 
 exports.handler = async (event) => {
@@ -27,16 +27,16 @@ exports.handler = async (event) => {
   const newPasswordHash = utils.encryptSha256Safe(newPassword, decode.user_id);
 
   //updateUserでPassword更新
-  const client = getClient();
+  const client = getClient(token);
   const passwordChange = () => {
     return new Promise(function (resolve, reject) {
       const mutation = gql(`
-        mutation updateUser {
-          updateUser(input: {id: "${decode.user_id}", password_hash: "${newPasswordHash}"}) {
-            password_hash
-          }
-      }
-    `);
+         mutation updateUser {
+           updateUser(input: {id: "${decode.user_id}", password_hash: "${newPasswordHash}"}) {
+             password_hash
+           }
+       }
+     `);
       client.hydrated().then(function (client) {
         client
           .mutate({ mutation: mutation })

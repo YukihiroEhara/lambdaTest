@@ -104,11 +104,16 @@ type resetPasswordMessage {
   errorMessage: String
 }
 
+type textFetch {
+  text: String
+}
+
 type Query {
   testFunc(id: ID!, name: String): UserFetch
   loginTest(email_address: String!, password_hash: String!): getUserEmail
   refreshTest(refreshToken: String!): getSessionToken
   passwordResetTest(resetPassword: String!): resetPasswordMessage
+  exampleFunc(id: ID!): textFetch
   searchUserCompanies(filter: SearchableUserCompanyFilterInput, sort: [SearchableUserCompanySortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableUserCompanyAggregationInput]): SearchableUserCompanyConnection
   getUser(id: ID!): User
   listUsers(id: ID, filter: ModelUserFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserConnection

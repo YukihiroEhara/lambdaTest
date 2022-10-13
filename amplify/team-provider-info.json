@@ -35,7 +35,7 @@
         },
         "passwordResetDev": {
           "deploymentBucketName": "amplify-lambdatestapp-dev-213425-deployment",
-          "s3Key": "amplify-builds/passwordResetDev-32653665653562365455-build.zip"
+          "s3Key": "amplify-builds/passwordResetDev-58613335427a76593570-build.zip"
         }
       }
     }

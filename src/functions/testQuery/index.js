@@ -1,9 +1,12 @@
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-const getClient = require("./get-gql-client");
+const getClient = require("../utils/get-gql-client").getClient;
 const gql = require("graphql-tag");
-(async () => {
+
+exports.handler = async (event) => {
+  console.log(`EVENT: ${JSON.stringify(event)}`);
+  const token = event.request.headers.authorization;
   const getUser = /* GraphQL */ gql(`
    query GetUser($id: ID!) {
      getUser(id: $id) {
@@ -13,29 +16,32 @@ const gql = require("graphql-tag");
    }
  `);
 
-  const token = "custom-authorize";
   const client = getClient(token);
   const fetchData = function () {
     return new Promise(function (resolve, reject) {
-      //   client.hydrated().then(function (client) {
       client
         .query({
           query: getUser,
           variables: {
-            id: "03f8110b-40c8-179a-0e9d-4184a29d8725",
+            id: event.arguments.id,
             fetchPolicy: "network-only",
           },
         }) //Uncomment for AWS Lambda
         .then(function logData(data) {
-          // console.log(util.inspect(data.data, { depth: 6 }));
           resolve(data.data);
         })
         .catch(console.error);
-      //   });
     });
   };
-  console.log("QUERY", await fetchData());
-  return {
-    data: fetchData(),
+
+  const query = await fetchData();
+  // console.log("QUERY!!!!", query.getUser.id);
+  // console.log("QUERY!!!", query.getUser.name);
+
+  const objData = {
+    id: query.getUser.id,
+    name: query.getUser.name,
   };
-})();
+
+  return objData;
+};

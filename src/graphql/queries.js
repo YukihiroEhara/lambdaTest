@@ -41,8 +41,15 @@ export const refreshTest = /* GraphQL */ `
 export const passwordResetTest = /* GraphQL */ `
   query PasswordResetTest($resetPassword: String!) {
     passwordResetTest(resetPassword: $resetPassword) {
-      errorMessage
       successMessage
+      errorMessage
+    }
+  }
+`;
+export const exampleFunc = /* GraphQL */ `
+  query ExampleFunc($id: ID!) {
+    exampleFunc(id: $id) {
+      text
     }
   }
 `;
