@@ -94,6 +94,11 @@ type resetPasswordMessage {
   successMessage: String
   errorMessage: String
 }
+
+type textFetch {
+  text: String
+}
+
 type Query {
   testFunc(id: ID!, name: String): UserFetch
     @function(name: "queryLambda-${env}")
@@ -103,4 +108,5 @@ type Query {
     @function(name: "refreshTokenCheckDev-${env}")
   passwordResetTest(resetPassword: String!): resetPasswordMessage
     @function(name: "passwordResetDev-${env}")
+  exampleFunc(id: ID!): textFetch @function(name: "testFunc")
 }

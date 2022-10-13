@@ -57,7 +57,7 @@ export const login = async (
   }
 };
 
-const secret = "6lN0CLISbEGHNCN80ZtMfzFPCmUE5UaF"; // 　一旦仮置き
+// const secret = "6lN0CLISbEGHNCN80ZtMfzFPCmUE5UaF"; // 　一旦仮置き
 
 export const checkAuth = () => {
   const token = localStorage.getItem("token") || "";

@@ -213,7 +213,7 @@
         "TemplateURL": "https://s3.amazonaws.com/amplify-lambdatestapp-dev-213425-deployment/amplify-cfn-templates/function/passwordResetDev-cloudformation-template.json",
         "Parameters": {
           "deploymentBucketName": "amplify-lambdatestapp-dev-213425-deployment",
-          "s3Key": "amplify-builds/passwordResetDev-32653665653562365455-build.zip",
+          "s3Key": "amplify-builds/passwordResetDev-58613335427a76593570-build.zip",
           "env": "dev"
         }
       }
@@ -227,7 +227,7 @@
           "DynamoDBBillingMode": "PAY_PER_REQUEST",
           "DynamoDBEnableServerSideEncryption": false,
           "S3DeploymentBucket": "amplify-lambdatestapp-dev-213425-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/9636352f87de0bdfcd290b62396078cef1ec3d52",
+          "S3DeploymentRootKey": "amplify-appsync-files/9d931f1cb5e42f194b1e91ca9e0f5a786e5c69bc",
           "env": "dev"
         }
       }

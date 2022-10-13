@@ -1,9 +1,10 @@
 const gql = require("graphql-tag");
 const executeAppsync = require("../executors").executeAppsync;
 const login = require("../utils/login").login;
+const FunctionFactory = require("../wrapper").FunctionFactory;
 
-describe("loginTest Query", () => {
-  jest.setTimeout(15000);
+exports.loginTest = describe("loginTest Query", () => {
+  jest.setTimeout(30000);
   it("loginTest Query fetch data", async () => {
     const email = "userD@gmail.com";
     const password = "11112222";
@@ -20,6 +21,7 @@ describe("loginTest Query", () => {
   `);
 
     const res = await executeAppsync(userData.sessionToken, query);
+    console.log(res);
     expect(res.testFunc.id).toBe(userData.userId);
     expect(res.testFunc.name).toBe(userData.name);
   });
@@ -37,10 +39,8 @@ describe("loginTest Query", () => {
     }
   `);
 
-    try {
-      const res = await executeAppsync(userData.sessionToken, query);
-    } catch (e) {
-      console.log(1, e);
-    }
+    expect(async () => {
+      await executeAppsync(userData.sessionToken, query);
+    }).toThrow(RangeError);
   });
 });
