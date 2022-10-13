@@ -5,6 +5,7 @@ const executors = require("./executors");
 // const executeAppsync = require("./executors").executeAppsync
 
 (async () => {
-  await example(executors.executeFunction);
-  // await example(executors.executeLambda, "LAMBDA");
+//    await example(executors.executeFunction);
+  //  await example(executors.executeLambda);
+   await example(executors.executeAppsync);
 })();

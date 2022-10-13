@@ -4,7 +4,9 @@ exports.example = async function (execute) {
   const email = "userD@gmail.com";
   const password = "11112222";
   const loginRes = await functionFactory.login(email, password);
-  console.log(111, loginRes);
+  // AppSyncの返り値 loginRes.data.loginTest
+  // Lambdaの返り値 loginRes
+
   const queryRes = await functionFactory.queryTest(
     loginRes.sessionToken,
     loginRes
